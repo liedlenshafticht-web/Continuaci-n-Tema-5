@@ -1,0 +1,6 @@
+/target/
+.env
+nbproject/private/
+build/
+nbbuild/
+dist/

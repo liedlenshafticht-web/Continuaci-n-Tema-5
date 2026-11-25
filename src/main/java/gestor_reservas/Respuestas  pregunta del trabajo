@@ -1,0 +1,61 @@
+10.2. ¿Qué ocurriría si ejecutaras un DELETE sin incluir la cláusula WHERE?
+
+Se borrarían todas las filas de la tabla reserva de golpe. La tabla seguiría existiendo, pero completamente vacía
+
+
+
+12.5. Transacciones con COMMIT, ROLLBACK y SAVEPOINT
+
+- ¿Qué cambios se conservan después del COMMIT?
+
+  Solo el cambio de la fecha, porque se hizo antes del SAVEPOINT
+
+
+
+- ¿Qué cambios se deshacen al utilizar ROLLBACK hasta el punto de recuperación?
+
+  El cambio de aula, ya que se hizo después del SAVEPOINT
+
+
+
+- ¿Qué diferencia existe entre ROLLBACK sin argumentos y ROLLBACK hasta un SAVEPOINT?
+
+  El ROLLBACK sin argumentos deshace toda la transacción desde el principio. En cambio, el ROLLBACK hasta un SAVEPOINT solo deshace lo que se hizo después de ese punto y mantiene los cambios anteriores
+
+
+
+- ¿Qué ocurriría si se produjera una excepción antes del COMMIT?
+
+  El programa entraría en el catch, ejecutaría rollback() y se cancelarían todos los cambios (tanto la fecha como el aula), dejando la base de datos tal y como estaba al principio
+
+
+
+13.3. ¿Por qué es preferible utilizar PreparedStatement con datos del usuario?
+
+Porque es mucho más seguro y evita ataques de inyección SQL, ya que trata lo que escribe el usuario como un dato normal y no como código SQL. Además, gestiona solo los tipos de datos y evita problemas con las comillas
+
+
+
+14.2 y 14.3. DELETE, TRUNCATE y DROP TABLE
+
+- Eliminar tabla vs. eliminar fila:
+
+  DROP TABLE borra la tabla entera junto con su estructura y todos sus datos, DELETE con WHERE solo borra las filas que le indiques y la tabla sigue existiendo
+
+
+
+- DELETE vs. TRUNCATE:
+
+  DELETE borra filas una a una y te deja usar WHERE para elegir cuáles borrar, TRUNCATE vacía toda la tabla de golpe, no permite usar WHERE y es mucho más rápido
+
+
+
+- DROP TABLE vs. TRUNCATE TABLE:
+
+  TRUNCATE vacía los datos pero deja la tabla creada y lista para seguir usandola, DROP TABLE elimina la tabla por completo de la base de datos.
+
+
+
+- ¿Por qué no usarlas sobre la tabla principal?
+
+  Porque borrarías todas las reservas reales de golpe y perderías información importante. Aunque en PostgreSQL se pueden deshacer si van dentro de una transacción, si las ejecutas normalmente el borrado se confirma al momento

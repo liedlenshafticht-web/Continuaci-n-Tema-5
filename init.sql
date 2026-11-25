@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS reserva (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    alumno VARCHAR(100) NOT NULL,
+    aula VARCHAR(20) NOT NULL,
+    fecha DATE NOT NULL,
+    CONSTRAINT uk_aula_fecha UNIQUE (aula, fecha)
+);
